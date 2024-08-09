@@ -4,6 +4,8 @@ import ApiTest from './ApiText';
 import InfiniteScrolling from './InfiniteScrolling';
 import Parent from './Parent';
 import Posts from './Posts';
+import Login from './Login';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
  
   const users = [
@@ -15,10 +17,21 @@ function App() {
   
 
   return (
-    <div>
+    <Router>  
+  <div>
     <h1>Namaste JavaScript 🙏</h1>
-    <Posts/>
+    <Routes>
+
+      <Route path="/api" element={<ApiTest />} />
+      <Route path="/infy" element={<InfiniteScrolling />} />
+      <Route path="/posts" element={<Posts />} />
+      <Route path="/login" element={<Login />} />
+
+    </Routes>
+    
   </div>
+  </Router>
+
   )
 }
 

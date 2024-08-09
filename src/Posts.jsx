@@ -1,5 +1,6 @@
 import React from 'react'
 import useFetchData from './hooks/useFetchData'
+import AuthHOC from './AuthHOC';
 
 const Posts = () => {
 
@@ -45,4 +46,4 @@ const Posts = () => {
   )
 }
 
-export default Posts
+export default AuthHOC(Posts)

@@ -3,6 +3,7 @@ import './App.css'
 import ApiTest from './ApiText';
 import InfiniteScrolling from './InfiniteScrolling';
 import Parent from './Parent';
+import Posts from './Posts';
 function App() {
  
   const users = [
@@ -16,7 +17,7 @@ function App() {
   return (
     <div>
     <h1>Namaste JavaScript 🙏</h1>
-    <ApiTest/>
+    <Posts/>
   </div>
   )
 }

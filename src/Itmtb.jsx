@@ -5,7 +5,6 @@ const debounce = (fn, delay) => {
   let timer;
   return function (...args) {
     const context = this;
-    const args = arguments
     clearTimeout(timer);
     timer = setTimeout(() => {
       fn.apply(context, args);
@@ -43,7 +42,7 @@ const Itmtb = () => {
   const mergedList = carList.map(car => {
 
     const price = priceList.find(price => price.id === car.id);
-    
+
     return { ...car, ...price };
   });
 

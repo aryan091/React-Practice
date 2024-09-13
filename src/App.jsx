@@ -6,6 +6,7 @@ import Parent from './Parent';
 import Posts from './Posts';
 import Login from './Login';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Itmtb from './Itmtb';
 function App() {
  
   const users = [
@@ -26,6 +27,8 @@ function App() {
       <Route path="/infy" element={<InfiniteScrolling />} />
       <Route path="/posts" element={<Posts />} />
       <Route path="/login" element={<Login />} />
+
+      <Route path="/itmtb" element={<Itmtb />} />
 
     </Routes>
     

@@ -108,7 +108,7 @@ const Itmtb = () => {
         {mergedList.map((item) => (
           <div
             key={item.id}
-            className="item border border-red-500 flex justify-between p-4 w-60 bg-yellow-300 rounded-md shadow-sm  text-gray-500 font-bold"
+            className="item border border-red-500 flex justify-between p-4 w-60 bg-yellow-300 rounded-md shadow-sm  text-gray-500 font-bold hover: translate-x-0.5 hover:-translate-y-0.5 hover:shadow-2xl"
           >
             <p>{item.car}</p>
             <p>{item.price}</p>

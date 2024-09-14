@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import "./styles.css";
 
-// Debounce function
+import { useState, useCallback } from "react";
+
 const debounce = (fn, delay) => {
   let timer;
   return function (...args) {
@@ -12,111 +13,99 @@ const debounce = (fn, delay) => {
   };
 };
 
-const Itmtb = () => {
-  const carList = [
-    { id: 1, car: 'toyota' },
-    { id: 2, car: 'zen' },
-    { id: 3, car: 'honda' },
-    { id: 4, car: 'bmw' },
-    { id: 5, car: 'audi' },
-    { id: 6, car: 'ford' },
-    { id: 7, car: 'chevrolet' },
-    { id: 8, car: 'nissan' },
-    { id: 9, car: 'mercedes' },
-    { id: 10, car: 'tesla' }
-  ];
+export default function App() {
+  const [query, setQuery] = useState("");
+  const [filteredCar, setFilteredCar] = useState([]);
+  const ids = [];
+  const inFilter = filteredCar.map((carItem) => ids.push(carItem.id));
 
-  const priceList = [
-    { id: 1, price: '2000' },
-    { id: 2, price: '4000' },
-    { id: 3, price: '5000' },
-    { id: 4, price: '10000' },
-    { id: 5, price: '12000' },
-    { id: 6, price: '6000' },
-    { id: 7, price: '5500' },
-    { id: 8, price: '7000' },
-    { id: 9, price: '15000' },
-    { id: 10, price: '30000' }
-  ];
+  const filterCars = (sQuery) => {
+    console.log("Function Called");
+    if (sQuery) {
+      const filtered = MERGED_LIST.filter(
+        (carItem) =>
+          // Create a search box, search cars by make, model, price
 
-  const mergedList = carList.map(car => {
-
-    const price = priceList.find(price => price.id === car.id);
-
-    return { ...car, ...price };
-  });
-
-  const [query, setQuery] = useState('');
-  const [filteredCars, setFilteredCars] = useState([]);
-
-  // Function to filter cars
-  const filterCars = (searchQuery) => {
-    if (searchQuery) {
-      const filtered = mergedList.filter(item =>
-        item.car.toLowerCase().includes(searchQuery.toLowerCase())
+          carItem.make.toLowerCase().includes(sQuery.toLowerCase()) ||
+          carItem.model.toLowerCase().includes(sQuery.toLowerCase()) ||
+          carItem.price.toString().includes(sQuery)
       );
-      setFilteredCars(filtered);
+      setFilteredCar(filtered);
     } else {
-      setFilteredCars([]);
+      setFilteredCar([]);
     }
   };
 
-  // Debounced filter function
-  const debouncedFilterCars = debounce(filterCars, 300);
+  const debouncedFiltering = useCallback(debounce(filterCars, 1000), []);
 
-  // Handle input change
-  const handleSearch = (e) => {
+  const handleChange = (e) => {
     const newQuery = e.target.value;
+
+    debouncedFiltering(newQuery);
     setQuery(newQuery);
-    debouncedFilterCars(newQuery); // Use debounced function
   };
 
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">ITMTB</h1>
-
-      <h2 className="text-xl mb-2">Search Bar</h2>
-
+    <div className="App" style={{ marginTop: 20 }}>
+      {/* create search box */}
       <input
-        type="text"
-        className="border border-red-500 p-2 m-2 w-full"
-        placeholder="Search Query"
+        placeholder="Enter Query"
         value={query}
-        onChange={handleSearch}
+        onChange={(e) => handleChange(e)}
       />
-
-      {query && (
-        <div className="border border-gray-300 rounded-md bg-white shadow-md max-h-60 overflow-auto mt-2">
-          {filteredCars.length ? (
-            filteredCars.map((item) => (
-              <div
-                key={item.id}
-                className="p-2 hover:bg-gray-100 text-gray-500 font-bold cursor-pointer"
-              >
-                {item.car}
-              </div>
-            ))
-          ) : (
-            <div className="p-2 text-gray-500">No results found</div>
-          )}
+      {/* render row format */}
+      {MERGED_LIST.map((car) => (
+        // const inFilteredList = ids.includes(car.id)
+        <div
+          style={{
+            fontSize: 20,
+            color: "black",
+            backgroundColor: ids.includes(car.id) ? "yellow" : "",
+          }}
+        >
+          <span style={{ marginRight: 20 }}>Id : {car.id}</span>
+          <span style={{ marginRight: 20 }}>Make : {car.make}</span>
+          <span style={{ marginRight: 20 }}>Model: {car.model}</span>
+          <span style={{ marginRight: 20 }}>Type: {car.type}</span>
+          <span style={{ marginRight: 20 }}>Price: {car.price}</span>
         </div>
-      )}
-
-      <h2 className="text-xl mt-6">Car List</h2>
-
-      <div className="flex flex-row gap-8 m-4 flex-wrap">
-        {mergedList.map((item) => (
-          <div
-            key={item.id}
-            className="item border border-red-500 flex justify-between p-4 w-60 bg-yellow-300 rounded-md shadow-sm  text-gray-500 font-bold hover: translate-x-0.5 hover:-translate-y-0.5 hover:shadow-2xl"
-          >
-            <p>{item.car}</p>
-            <p>{item.price}</p>
-          </div>
-        ))}
-      </div>
+      ))}
     </div>
   );
-};
+}
 
-export default Itmtb;
+// RENDER THE COLUMNS: make, model, type, price
+// Create a search box, search cars by make, model, price
+
+export const CAR_LIST = [
+  {
+    id: 1,
+    make: "Mitsubishi",
+    model: "Lancer",
+    type: "Used",
+  },
+  { id: 2, make: "Honda", model: "Vezel", type: "New" },
+  { id: 3, make: "Honda", model: "Civic", type: "Used" },
+  { id: 4, make: "Audi", model: "A3", type: "New" },
+  { id: 5, make: "Audi", model: "A4", type: "Used" },
+  { id: 6, make: "Audi", model: "A7", type: "New" },
+  { id: 7, make: "BMW", model: "i8", type: "Used" },
+];
+
+export const PRICE_LIST = [
+  { car_id: 1, price: 1000 },
+  { car_id: 2, price: 2000 },
+  { car_id: 3, price: 3000 },
+  { car_id: 4, price: 4000 },
+  { car_id: 5, price: 5000 },
+  { car_id: 6, price: 6000 },
+  { car_id: 7, price: 7000 },
+];
+
+const MERGED_LIST = CAR_LIST.map((car) => {
+  const price = PRICE_LIST.find((price) => car.id === price.car_id);
+  return { ...car, ...price };
+});
+
+// console.log(MERGED_LIST)
